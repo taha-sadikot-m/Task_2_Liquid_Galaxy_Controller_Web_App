@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Responsive Profile Card || Learning Robo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/c39c442009.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<div class="photo"><img src="../static/images/logo.png" /></div>
+	<div class="container">
+		<div class="items">
+			<div class="desc">
+                <input type="text" id="ip" class="form_control" placeholder="Master Node IP Address">
+                <input type="text" id="username" class="form_control" placeholder="Master Node Username">
+                <input type="text" id="password" class="form_control" placeholder="Master Node Password">
+                <input type="number" id="nodes" class="form_control" placeholder="Number of screens">
+                
+            </div>
+	        <div class="right" id="full">
+		        <div class="about">
+			        <h3>Status <hr></h3>
+                    <h3 id="status">Not Connected</h3>
+	            </div>
+                <!--
+	            <div class="social-icons">
+                </div>
+                -->
+                <div class="buttons"> 
+    	            <button  class="contact" id="connect-btn">Connect</button>
+                    <button  class="contact" id="clear-logo-btn">Clear Logo / KML</button>
+                    <button  class="contact" id="show-logo-btn">Show Logo</button>
+                    <button  class="contact" id="show-kml-btn">Show Location</button>
+                    <button  class="contact" id="relaunch-btn">Relaunc LG</button>
+                    <button  class="contact" id="reboot_btn">Reboot</button>
+                    <button  class="contact" id="power_off_btn">Power Off</button>
+                    
+                </div>
+            </div>
+		</div>
+	</div>
+    <script src="./static/js/script.js" ></script>
+	</body>
+
+</html>
