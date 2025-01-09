@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const executeCommand = async (ip, username, password, command) => {
+  const executeCommand = async (ip, username, password, command,machine_count) => {
     try {
       // Use an API or backend service to execute the SSH command
       const response = await fetch("/execute-command", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ip, username, password, command }),
+        body: JSON.stringify({ ip, username, password, command, machine_count }),
       });
 
       const result = await response.json();
@@ -27,13 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const ip = document.getElementById("ip").value;
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
+      const machine_count = document.getElementById("nodes").value;
       if (ip && username && password) {
         try {
           // Send a test command to the backend
           const response = await fetch("/check-connection", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ip, username, password }),
+            body: JSON.stringify({ ip, username, password,machine_count }),
           });
 
           const result = await response.json();
@@ -63,7 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const command = "reboot_lg"; // command
-    executeCommand(ip, username, password, command);
+    const machine_count = document.getElementById("nodes").value;
+    executeCommand(ip, username, password, command,machine_count);
   });
 
   document
@@ -73,7 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const command = "lg_relaunch"; //command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
     document
@@ -84,7 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("password").value;
       console.log("POWER OFF");
       const command = "power_off__lg"; // command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
   document
@@ -94,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const command = "clear_logo"; // command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
   document
@@ -104,7 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const command = "show_logo"; // command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
   document
@@ -114,17 +120,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const command = "show_kml"; // command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
   document
     .getElementById("clear-kml-btn")
     .addEventListener("click", function () {
+      //alert("KML Being Cleared !!!");
       const ip = document.getElementById("ip").value;
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const command = "clear_kml"; // command
-      executeCommand(ip, username, password, command);
+      const machine_count = document.getElementById("nodes").value;
+      executeCommand(ip, username, password, command,machine_count);
     });
 
   

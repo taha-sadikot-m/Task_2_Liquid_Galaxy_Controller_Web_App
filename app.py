@@ -161,11 +161,12 @@ def execute_command():
     username = data.get('username')
     password = data.get('password')
     command = data.get('command')
+    machine_count = data.get('machine_count')
 
     if command == "show_logo":
-        return show_logo(ip, username, password, 'https://i.imgur.com/j3hL9Ka.png')
+        return show_logo(ip, username, password, 'https://i.imgur.com/j3hL9Ka.png',machine_count)
     elif command == "clear_logo":
-        return clear_logo(ip, username, password)
+        return clear_logo(ip, username, password,machine_count)
     elif command == "lg_relaunch":
         return relaunch(ip, username, password)
     elif command == "show_kml":
@@ -174,8 +175,31 @@ def execute_command():
         return power_off_lg(ip,username,password)
     elif command == "reboot_lg":
         return reboot_lg(ip,username,password)
+    elif command == "clear_kml":
+        return clear_kml(ip,username,password)
     else:
         return jsonify({"success": False, "error": "No command Found"}), 500
+
+
+
+
+def clear_kml(ip, username, password):
+    try:
+        ssh = ssh_connect(ip, username, password)
+        clear_kml = ""
+        
+        #clear KML command
+        command = f"echo ' ' > /tmp/query.txt"
+        stdin, stdout, stderr = ssh.exec_command(command)
+        output = stdout.read().decode() 
+        error = stderr.read().decode()
+        print("OUTPUT CLEAR KML :- ",output)
+        print("ERROR CLEAR KML :- ",error)
+
+        return jsonify({"success": True, "message": "KML cleared successfully"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 
 
 def reboot_lg(ip,username,password):
@@ -215,22 +239,23 @@ def relaunch(ip, username, password):
 
 
 
-def show_logo(ip, username, password, image_url):
+def show_logo(ip, username, password, image_url,machine_count):
     try:
         print("Show LOGO Function CALLED !!!!")
         ssh = ssh_connect(ip, username, password)
 
         # Create KML to display the image
         display_kml = DISPLAY_KML_TEMPLATE.format(image_url=image_url)
-
+        print("##############",machine_count)
+        slave_id = int((int(machine_count)/2))+2
         
-        for slave_id in range(2, 4): 
-            slave_kml_path = SLAVE_KML_TEMPLATE.format(slave_id)
-            update_kml_file(ssh, display_kml, slave_kml_path)
+        
+        slave_kml_path = SLAVE_KML_TEMPLATE.format(slave_id)
+        update_kml_file(ssh, display_kml, slave_kml_path)
             
-            result = refresh_slaves(ssh,ip,username,password,slave_id)
-            #print("SHOW LOGO RESULT : -  ",result)
-            print(f"Image displayed on Slave {slave_id}.")
+        result = refresh_slaves(ssh,ip,username,password,slave_id)
+        #print("SHOW LOGO RESULT : -  ",result)
+        print(f"Image displayed on Slave {slave_id}.")
         return jsonify({"success": True, "message": "Logo displayed on all nodes successfully"})
     
     except subprocess.CalledProcessError as e:
@@ -238,16 +263,18 @@ def show_logo(ip, username, password, image_url):
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-def clear_logo(ip, username, password):
+def clear_logo(ip, username, password,machine_count):
     try:
         ssh = ssh_connect(ip, username, password)
         clear_kml = CLEAR_KML_TEMPLATE
-
-        for slave_id in range(2, 4):  # Assume 3 slaves, adjust as necessary
-            slave_kml_path = SLAVE_KML_TEMPLATE.format(slave_id)
-            update_kml_file(ssh, clear_kml, slave_kml_path)
-            result = refresh_slaves(ssh,ip,username,password,slave_id)
-            print(f"Logo cleared from Slave {slave_id}.")
+        print("##############",machine_count)
+        slave_id = int((int(machine_count)/2))+2
+        
+        #Displaying Logo on Left Most Screen
+        slave_kml_path = SLAVE_KML_TEMPLATE.format(slave_id)
+        update_kml_file(ssh, clear_kml, slave_kml_path)
+        result = refresh_slaves(ssh,ip,username,password,slave_id)
+        print(f"Logo cleared from Slave {slave_id}.")
 
         return jsonify({"success": True, "message": "Logo cleared from all nodes successfully"})
     except Exception as e:
