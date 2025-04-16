@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import paramiko
 import asyncio
+import gunicorn
 
 MASTER_KML = '/var/www/html/kml/master_1.kml'  # Path to the master KML file
 SLAVE_KML_TEMPLATE = '/var/www/html/kml/slave_{}.kml'
@@ -349,4 +350,4 @@ fi
             print(f"Exception while relaunching screen {i}: {e}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True,port=7000)
